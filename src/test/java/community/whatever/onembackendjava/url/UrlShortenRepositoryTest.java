@@ -1,16 +1,19 @@
 package community.whatever.onembackendjava.url;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class UrlShortenRepositoryTest {
 
-    UrlShortenRepository urlShortenRepository ;
+    static UrlShortenRepository urlShortenRepository ;
 
-    @BeforeEach
-    public void setUp(){
+    @BeforeAll
+    // BeforeAll - 클래스 초기화 할떄 한번 실행
+    // BeforeEach - 테스트 메소드 실행할때 ㅁrㄷr 실행
+    public static void setUp(){
         urlShortenRepository = new UrlShortenRepository() ;
         // 테스트용
         urlShortenRepository.testInsertValue("1234" , "https://docs.oracle.com");
