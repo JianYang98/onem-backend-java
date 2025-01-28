@@ -16,35 +16,21 @@ public class UrlShortenController {
 
     @PostMapping("/shorten-url/search")
     public String shortenUrlSearch(@RequestBody RequestVO requestVO ) {
-        String result ;
-        if(!urlShortenService.existKey(requestVO.getKey())){
-            // todo exception 처리 따로할 예정
-            throw new IllegalArgumentException("Invalid key"); // 변경예정
-        }else{
-            result = urlShortenService.searchUrl(requestVO.getKey()) ;
-        }
-        return result ;
+        return urlShortenService.searchUrl(requestVO.getKey());
     }
     @PostMapping("/shorten-url/create")
     public String shortenUrlCreate(@RequestBody RequestVO requestVO ) {
-        String result ;
-        if(urlShortenService.existUrl(requestVO.getUrl())){
-            result = urlShortenService.searchKey(requestVO.getUrl()) ;
-            return result;
-        }else{
-            result = urlShortenService.createKey(requestVO.getUrl()) ;
-            return result;
-        }
-
+        return  urlShortenService.createKey(requestVO.getUrl()) ;
     }
 
     @GetMapping("/shorten-url/delete/{key}")
     public String shortenUrlDelete(@PathVariable String key){
     //  delete에 대하여 return 메세지 고민 즁
-        if (urlShortenService.existKey(key)){
-            urlShortenService.deleteKey(key) ;
-            return "true";
+        String result ="False" ;
+        if(urlShortenService.deleteKey(key)){
+            result = "True";
         }
-        return "false" ;
+        return result;
+
     }
 }

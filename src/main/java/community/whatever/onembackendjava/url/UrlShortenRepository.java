@@ -48,11 +48,11 @@ public class UrlShortenRepository {
         return uniqueKey ;
     }
 
-    public int deleteKey(String key){
+    public boolean deleteKey(String key){
         if(shortenUrlMap.remove(key) != null){
-            return 1 ;
+            return true;
         }else {
-            return -1 ;
+            return false ;
         }
     }
 

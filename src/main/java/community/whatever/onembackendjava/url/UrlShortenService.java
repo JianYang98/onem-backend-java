@@ -12,6 +12,6 @@ public interface UrlShortenService {
 
      String searchUrl(String key) ;
 
-     int deleteKey(String key) ;
+     boolean deleteKey(String key) ;
 
 }

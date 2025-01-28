@@ -28,13 +28,30 @@ public class UrlShortenServiceImpl implements  UrlShortenService{
     }
 
     public String createKey(String url) {
-        return urlShortenRepository.createKey(url);
+        String result = "";
+        if(urlShortenRepository.existKey(url)){
+            result = urlShortenRepository.searchKey(url);
+        }else{
+            result = urlShortenRepository.createKey(url);
+        }
+        System.out.println("result = " + result);
+        return result;
     }
 
     public String searchUrl(String key) {
-        return urlShortenRepository.searchUrl(key);
+        if(urlShortenRepository.existKey(key)){
+            return urlShortenRepository.searchUrl(key);
+        }else{
+            // 키가 존재 하지 않으면 Exception
+            throw new IllegalArgumentException("Invalid key");
+        }
     }
-    public int deleteKey(String key) {
-        return urlShortenRepository.deleteKey(key);
+    public boolean deleteKey(String key) {
+        if(urlShortenRepository.existKey(key)){
+            return urlShortenRepository.deleteKey(key);
+        }else{
+            throw new IllegalArgumentException("Invalid key");
+        }
+
     }
 }
