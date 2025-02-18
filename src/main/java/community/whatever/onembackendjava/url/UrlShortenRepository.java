@@ -1,68 +1,37 @@
 package community.whatever.onembackendjava.url;
 
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
-@Component
+@Slf4j
+@Repository
 public class UrlShortenRepository {
+    private final Map<String, ShortenUrl> shortenUrlMap = new HashMap<>();
 
-    private final Map<String, String> shortenUrlMap = new HashMap<>();
-    private static final Random random = new Random() ;
 
-    boolean existUrl(String url){
-        return shortenUrlMap.containsValue(url) ;
-    }
     boolean existKey(String key){
         return shortenUrlMap.containsKey(key) ;
     }
 
-    //  앞으로 고민 사항 일단 Map 커지면 개선이 필요함 어떻게 key와 value값을 효율적으로 관리할것인지 고민해보기
-    public String searchKey(String url){
-        String resultKey = "" ;
-        for (Map.Entry<String, String> entry : shortenUrlMap.entrySet()){
-            if (entry.getValue().equals(url)){
-                resultKey = entry.getKey() ;
+    // O(N)이라서 키 같을때 어떻게 처리 할지 방법 고민할 예정
+    ShortenUrl existUrl(String url) {
+        for (ShortenUrl shortenUrl : shortenUrlMap.values()) {
+            if (shortenUrl.originUrl().equals(url)) {
+                return shortenUrl ;
             }
         }
-        return resultKey ;
+        return null ;
     }
-    public String searchUrl(String key){
 
+    public void saveKey(ShortenUrl shortenUrl){
+        shortenUrlMap.put(shortenUrl.urlKey(), shortenUrl) ;
+    }
+
+    public ShortenUrl getShotenUrl(String key){
         return shortenUrlMap.get(key) ;
-    }
-
-
-
-    public String createKey(String url){
-        String uniqueKey = generateKey();
-
-        while (shortenUrlMap.containsKey(uniqueKey)){
-            uniqueKey = generateKey();
-        }
-        shortenUrlMap.put(uniqueKey, url) ;
-
-        return uniqueKey ;
-    }
-
-    public boolean deleteKey(String key){
-        if(shortenUrlMap.remove(key) != null){
-            return true;
-        }else {
-            return false ;
-        }
-    }
-
-    // test용
-    public void testInsertValue(String key , String Url){
-        shortenUrlMap.put(key , Url ) ;
-    }
-
-    private static String generateKey(){
-        return  String.valueOf(random.nextInt(10000));
     }
 
 }
